@@ -9,15 +9,14 @@
     "plugin:react/recommended",
     "airbnb",
     "plugin:prettier/recommended",
-    "prettier",
-    "react-app"
+    "prettier"
   ],
   "settings": {
     "react": {
       "version": "detect"
     }
   },
-  "plugins": ["react", "react-hooks", "prettier"],
+  "plugins": ["react", "prettier"],
   "rules": {
     "quotes": ["error", "single"],
     "no-console": "warn",
