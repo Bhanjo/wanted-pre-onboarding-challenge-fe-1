@@ -1,7 +1,14 @@
+import Axios from '../lib/axsios';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 // 로그인이 안되어 있다면 로그인 페이지로 이동 기능 구현 필요
 const Home = () => {
+  const fetchTest = async () => {
+    const data = await Axios.get('/todos');
+    console.log(data);
+  };
+
   return (
     <Container>
       <TodoContainer>어서오세요!</TodoContainer>
