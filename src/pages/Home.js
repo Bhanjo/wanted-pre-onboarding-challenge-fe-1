@@ -1,30 +1,42 @@
+import Axios from '../lib/axsios';
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // 로그인이 안되어 있다면 로그인 페이지로 이동 기능 구현 필요
 const Home = () => {
   const todoId = useRef(1);
 
-  const [todos, setTodos] = useState([
-    {
-      id: 0,
-      title: '제목1',
-      content: '본문1',
-      createdAt: '2022-01-01',
-      updatedAt: '2022-07-01',
-    },
-  ]);
+  const [todos, setTodos] = useState();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const fetchTodos = async () => {
+    const data = await Axios.get('/todos');
+    return data.data;
+  };
 
-  const initState = () => {
-    setTitle('');
-    setContent('');
+  useEffect(() => {
+    const todoData = fetchTodos();
+    setTodos(todoData);
+  }, []);
+
+  // 폼 구조
+  const inputsFormat = {
+    title: '',
+    content: '',
+  };
+
+  const [formInputs, setFormInputs] = useState(inputsFormat);
+  const { title, content } = formInputs;
+
+  const initFormInputs = () => {
+    setFormInputs(inputsFormat);
   };
 
   const onChange = e => {
-    setContent(e.target.value);
+    const { name, value } = e.target;
+    setFormInputs({
+      ...formInputs,
+      [name]: value,
+    });
   };
 
   const onSubmit = e => {
@@ -33,25 +45,24 @@ const Home = () => {
       id: todoId.current,
       title: 'asd',
       content: content,
-      createdAt: '2020-07-30',
-      updatedAt: '2020-07-30',
     };
     todoId.current += 1;
     setTodos(todos.concat(todo));
-    initState();
+    initFormInputs();
   };
 
   return (
     <Container>
       <TodoContainer>
         <form onSubmit={onSubmit}>
-          <input value={content} onChange={onChange} />
+          <input name='title' value={title} onChange={onChange} />
+          <input name='content' value={content} onChange={onChange} />
           <button type='submit'>등록</button>
         </form>
         <div>
-          {todos.map(todo => (
+          {/* {todos.map(todo => (
             <p key={todo.id}>{todo.content}</p>
-          ))}
+          ))} */}
         </div>
       </TodoContainer>
     </Container>
