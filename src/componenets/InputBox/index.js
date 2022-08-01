@@ -1,10 +1,12 @@
 import * as Style from './styles';
 
-const InputBox = ({ inputName, labelText, error, children }) => {
+const InputBox = ({ inputName, labelText, error, children, isEssentail }) => {
   return (
     <div>
       <Style.InputGroup>
-        <label htmlFor={inputName}>{labelText}</label>
+        <Style.Label htmlFor={inputName} isEssentail>
+          {labelText}
+        </Style.Label>
         {/* input을 children으로 받습니다. */}
         {children}
       </Style.InputGroup>

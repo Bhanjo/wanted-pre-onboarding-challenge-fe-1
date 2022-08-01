@@ -100,7 +100,7 @@ const SignUp = () => {
       onSubmit={onSubmit}
       BtnDisabled={!(emailValid && passwordValid && rePasswordVaild)}
     >
-      <InputBox inputName='email' labelText='이메일' error={inputVaild('email')}>
+      <InputBox inputName='email' labelText='이메일' error={inputVaild('email')} isEssentail>
         <input
           type='text'
           name='email'
@@ -109,7 +109,12 @@ const SignUp = () => {
           onChange={onChange}
         />
       </InputBox>
-      <InputBox inputName='password' labelText='비밀번호' error={inputVaild('password')}>
+      <InputBox
+        inputName='password'
+        labelText='비밀번호'
+        error={inputVaild('password')}
+        isEssentail
+      >
         <input
           type='password'
           name='password'
@@ -118,7 +123,12 @@ const SignUp = () => {
           onChange={onChange}
         />
       </InputBox>
-      <InputBox inputName='rePassword' labelText='비밀번호 확인' error={inputVaild('rePassword')}>
+      <InputBox
+        inputName='rePassword'
+        labelText='비밀번호 확인'
+        error={inputVaild('rePassword')}
+        isEssentail
+      >
         <input
           type='password'
           name='rePassword'
