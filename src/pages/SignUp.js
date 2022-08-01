@@ -40,9 +40,9 @@ const SignUp = () => {
     /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
   useEffect(() => {
-    setEmailValid(inputs.email !== '' && inputs.email.match(emailPattern));
+    setEmailValid(inputs.email !== '' && inputs.email.match(emailPattern) !== null);
     setPasswordValid(inputs.password.length >= 8);
-    setRePasswordVaild(inputs.password === inputs.rePassword);
+    setRePasswordVaild(inputs.password === inputs.rePassword && inputs.rePassword !== '');
   }, [inputs.email, inputs.password, inputs.rePassword]);
 
   return (
@@ -86,10 +86,12 @@ const SignUp = () => {
                 onChange={onChange}
               />
             </InputGroup>
-            {!rePasswordVaild && <p>입력하신 비밀번호와 다릅니다.</p>}
+            {!rePasswordVaild && inputs.rePassword !== '' && <p>입력하신 비밀번호와 다릅니다.</p>}
           </div>
         </InputContainer>
-        <button type='submit'>회원가입</button>
+        <SubmitButton type='submit' disabled={!(emailValid && passwordValid && rePasswordVaild)}>
+          회원가입
+        </SubmitButton>
       </Form>
     </Sign>
   );
@@ -100,22 +102,23 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    color: #fff;
-    display: flex;
-    font-size: 30px;
-    font-weight: bold;
-    background-color: ${({ theme }) => theme.colors.primary.indigo};
-    transition: 0.2s;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: ${({ theme }) => theme.colors.primary.darkblue};
+`;
+
+const SubmitButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  color: #fff;
+  display: flex;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: ${props => (props.disabled ? 'gray' : props.theme.colors.primary.indigo)};
+  transition: 0.2s;
+  cursor: ${props => props.disabled || 'pointer'};
+  :hover {
+    background-color: ${props => props.disabled || props.theme.colors.primary.darkblue};
   }
 `;
 
