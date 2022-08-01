@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Sign from '../componenets/Sign';
+import InputBox from '../componenets/InputBox';
 
 const SignUp = () => {
   const initForm = {
@@ -45,50 +46,65 @@ const SignUp = () => {
     setRePasswordVaild(inputs.password === inputs.rePassword && inputs.rePassword !== '');
   }, [inputs.email, inputs.password, inputs.rePassword]);
 
+  const vaildMessages = {
+    email: '이메일이 올바르지 않습니다',
+    password: '8자리 이상 입력하세요',
+    rePassword: '입력하신 비밀번호와 다릅니다.',
+  };
+
+  const inputVaild = type => {
+    let msg = null;
+    if (type === 'email' && !emailValid && inputs.email) {
+      msg = vaildMessages.email;
+    }
+
+    if (type === 'password' && !passwordValid && inputs.password) {
+      msg = vaildMessages.password;
+    }
+
+    if (type === 'rePassword' && !rePasswordVaild && inputs.rePassword) {
+      msg = vaildMessages.rePassword;
+    }
+
+    return msg;
+  };
+
   return (
     <Sign title={'회원가입'}>
       <Form onSubmit={onSubmit}>
-        <InputContainer>
-          <div>
-            <InputGroup>
-              <label htmlFor='email'>이메일</label>
-              <input
-                type='text'
-                name='email'
-                value={email}
-                placeholder={inputPlaceholder.email}
-                onChange={onChange}
-              />
-            </InputGroup>
-            {!emailValid && inputs.email !== '' && <p>이메일이 올바르지 않습니다</p>}
-          </div>
-          <div>
-            <InputGroup>
-              <label htmlFor='password'>비밀번호</label>
-              <input
-                type='password'
-                name='password'
-                value={password}
-                placeholder={inputPlaceholder.password}
-                onChange={onChange}
-              />
-            </InputGroup>
-            {!passwordValid && inputs.password !== '' && <p>8자리 이상 입력하세요</p>}
-          </div>
-          <div>
-            <InputGroup>
-              <label htmlFor='password'>비밀번호 확인</label>
-              <input
-                type='password'
-                name='rePassword'
-                value={rePassword}
-                placeholder={inputPlaceholder.rePassword}
-                onChange={onChange}
-              />
-            </InputGroup>
-            {!rePasswordVaild && inputs.rePassword !== '' && <p>입력하신 비밀번호와 다릅니다.</p>}
-          </div>
-        </InputContainer>
+        <FormDatas>
+          <InputBox inputName='email' labelText='이메일' error={inputVaild('email')}>
+            <input
+              type='text'
+              name='email'
+              value={email}
+              placeholder={inputPlaceholder.email}
+              onChange={onChange}
+            />
+          </InputBox>
+          <InputBox inputName='password' labelText='비밀번호' error={inputVaild('password')}>
+            <input
+              type='password'
+              name='password'
+              value={password}
+              placeholder={inputPlaceholder.password}
+              onChange={onChange}
+            />
+          </InputBox>
+          <InputBox
+            inputName='rePassword'
+            labelText='비밀번호 확인'
+            error={inputVaild('rePassword')}
+          >
+            <input
+              type='password'
+              name='rePassword'
+              value={rePassword}
+              placeholder={inputPlaceholder.rePassword}
+              onChange={onChange}
+            />
+          </InputBox>
+        </FormDatas>
         <SubmitButton type='submit' disabled={!(emailValid && passwordValid && rePasswordVaild)}>
           회원가입
         </SubmitButton>
@@ -122,34 +138,13 @@ const SubmitButton = styled.button`
   }
 `;
 
-const InputContainer = styled.div`
+const FormDatas = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px 0;
   margin: 30px 20px 0 20px;
   p {
     color: red;
-  }
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  label::after {
-    content: '*';
-    color: red;
-  }
-  input {
-    width: 65%;
-    height: 35px;
-    padding-left: 10px;
-    border-radius: 4px;
-    border: 1px solid #d5d4d4;
-    font-size: 18px;
-  }
-  input:focus {
-    outline: 2px solid ${({ theme }) => theme.colors.primary.indigo};
   }
 `;
 
