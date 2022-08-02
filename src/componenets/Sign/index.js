@@ -9,6 +9,7 @@ const Sign = ({ title, children, onSubmit, BtnDisabled }) => {
         <Style.Title>{title}</Style.Title>
         <Style.Form onSubmit={onSubmit}>
           <Style.FormDatas>{children}</Style.FormDatas>
+          <p>{}</p>
           <Style.SubmitButton type='submit' disabled={BtnDisabled}>
             {title}
           </Style.SubmitButton>
