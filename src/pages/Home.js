@@ -1,9 +1,15 @@
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ContentContainer from '../componenets/ContentContainer';
 
 // 로그인이 안되어 있다면 로그인 페이지로 이동 기능 구현 필요
 const Home = () => {
+  // const token = localStorage.getItem('jwt');
+  const [token, setToken] = useState(localStorage.getItem('jwt'));
+
+  const navigate = useNavigate();
+
   const todoId = useRef(1);
 
   const [todos, setTodos] = useState([
@@ -41,6 +47,13 @@ const Home = () => {
     setTodos(todos.concat(todo));
     initState();
   };
+
+  useEffect(() => {
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/auth/sign-in');
+    }
+  }, []);
 
   return (
     <ContentContainer>

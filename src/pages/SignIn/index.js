@@ -1,9 +1,12 @@
 import Axios from '../../lib/axios';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
   const initForm = {
     email: '',
     password: '',
@@ -46,12 +49,21 @@ const SignIn = () => {
     try {
       const res = await loginReqeust();
       localStorage.setItem('jwt', res.token);
-      alert('로그인이 됐습니다.');
+      alert('로그인 완료');
+      navigate('/');
     } catch (e) {
       console.log('error occured in onSubmit', e);
     }
     setInputs(initForm);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      alert('이미 로그인 되었습니다.');
+      navigate('/');
+    }
+  }, []);
 
   return (
     <Sign title='로그인' onSubmit={onSubmit}>

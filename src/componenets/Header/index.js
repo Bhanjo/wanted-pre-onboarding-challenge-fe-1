@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Style from './styles';
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState(false);
-  const token = localStorage.getItem('jwt');
+  const navigate = useNavigate();
+  const [token, setToken] = useState(localStorage.getItem('jwt'));
 
   const logout = () => {
     localStorage.removeItem('jwt');
-    setIsLogin(false);
     alert('로그아웃');
+    navigate('/auth/sign-in');
+    setToken(null);
   };
 
   useEffect(() => {
-    token ? setIsLogin(true) : setIsLogin(false);
-  }, []);
+    setToken(localStorage.getItem('jwt'));
+  }, [token]);
 
   return (
     <Style.Container>
       <Style.RouteWrap>
         <Style.RouteButton to='/'>Todo</Style.RouteButton>
-        {isLogin ? (
+        {token ? (
           <button type='button' onClick={logout}>
             로그아웃
           </button>
