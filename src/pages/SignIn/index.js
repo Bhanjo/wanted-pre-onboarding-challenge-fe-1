@@ -1,3 +1,4 @@
+import Axios from '../../lib/axios';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
 import { useState } from 'react';
@@ -24,9 +25,31 @@ const SignIn = () => {
     });
   };
 
-  const onSubmit = e => {
+  const loginReqeust = async () => {
+    try {
+      const data = await Axios.post('/users/login', {
+        email: email,
+        password: password,
+      });
+      return data.data;
+    } catch (e) {
+      if (e.request.status === 400) {
+        alert('일치하는 정보가 없습니다');
+      } else {
+        console.log('error occured in fetchLogin', e);
+      }
+    }
+  };
+
+  const onSubmit = async e => {
     e.preventDefault();
-    alert('로그인');
+    try {
+      const res = await loginReqeust();
+      localStorage.setItem('jwt', res.token);
+      alert('로그인이 됐습니다.');
+    } catch (e) {
+      console.log('error occured in onSubmit', e);
+    }
     setInputs(initForm);
   };
 
