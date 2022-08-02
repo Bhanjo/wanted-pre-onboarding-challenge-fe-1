@@ -4,10 +4,6 @@ export const InputGroup = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  label::after {
-    content: '*';
-    color: red;
-  }
   input {
     width: 65%;
     height: 35px;
@@ -18,5 +14,12 @@ export const InputGroup = styled.div`
   }
   input:focus {
     outline: 2px solid ${({ theme }) => theme.colors.primary.indigo};
+  }
+`;
+
+export const Label = styled.label`
+  ::after {
+    content: ${props => props.isEssentail && '*'};
+    color: ${props => props.isEssentail && 'red'};
   }
 `;

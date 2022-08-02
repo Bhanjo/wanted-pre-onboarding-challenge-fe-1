@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../../lib/axios';
-import * as Style from './styles';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
 
@@ -96,48 +95,48 @@ const SignUp = () => {
   }, [email, password, rePassword]);
 
   return (
-    <Sign title={'회원가입'}>
-      <Style.Form onSubmit={onSubmit}>
-        <Style.FormDatas>
-          <InputBox inputName='email' labelText='이메일' error={inputVaild('email')}>
-            <input
-              type='text'
-              name='email'
-              value={email}
-              placeholder={placeholder.email}
-              onChange={onChange}
-            />
-          </InputBox>
-          <InputBox inputName='password' labelText='비밀번호' error={inputVaild('password')}>
-            <input
-              type='password'
-              name='password'
-              value={password}
-              placeholder={placeholder.password}
-              onChange={onChange}
-            />
-          </InputBox>
-          <InputBox
-            inputName='rePassword'
-            labelText='비밀번호 확인'
-            error={inputVaild('rePassword')}
-          >
-            <input
-              type='password'
-              name='rePassword'
-              value={rePassword}
-              placeholder={placeholder.rePassword}
-              onChange={onChange}
-            />
-          </InputBox>
-        </Style.FormDatas>
-        <Style.SubmitButton
-          type='submit'
-          disabled={!(emailValid && passwordValid && rePasswordVaild)}
-        >
-          회원가입
-        </Style.SubmitButton>
-      </Style.Form>
+    <Sign
+      title={'회원가입'}
+      onSubmit={onSubmit}
+      BtnDisabled={!(emailValid && passwordValid && rePasswordVaild)}
+    >
+      <InputBox inputName='email' labelText='이메일' error={inputVaild('email')} isEssentail>
+        <input
+          type='text'
+          name='email'
+          value={email}
+          placeholder={placeholder.email}
+          onChange={onChange}
+        />
+      </InputBox>
+      <InputBox
+        inputName='password'
+        labelText='비밀번호'
+        error={inputVaild('password')}
+        isEssentail
+      >
+        <input
+          type='password'
+          name='password'
+          value={password}
+          placeholder={placeholder.password}
+          onChange={onChange}
+        />
+      </InputBox>
+      <InputBox
+        inputName='rePassword'
+        labelText='비밀번호 확인'
+        error={inputVaild('rePassword')}
+        isEssentail
+      >
+        <input
+          type='password'
+          name='rePassword'
+          value={rePassword}
+          placeholder={placeholder.rePassword}
+          onChange={onChange}
+        />
+      </InputBox>
     </Sign>
   );
 };
