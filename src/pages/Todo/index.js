@@ -29,14 +29,19 @@ const Todo = () => {
 
   const getTodoById = async id => {
     if (id) {
-      const req = await Axios.get(`/todos/${id}`, { headers: { Authorization: token } });
-      const { data } = req.data;
-      setDetail({
-        title: data.title,
-        content: data.content,
-      });
-    } else {
-      setDetail({ title: '', content: '' });
+      try {
+        const req = await Axios.get(`/todos/${id}`, { headers: { Authorization: token } });
+        const { data } = req.data;
+        setDetail({
+          title: data.title,
+          content: data.content,
+        });
+      } catch (e) {
+        setDetail({
+          title: '해당 todo를 찾을 수 없습니다',
+          content: '',
+        });
+      }
     }
   };
 
@@ -47,6 +52,11 @@ const Todo = () => {
       },
     });
     return req.data;
+  };
+
+  const removeTodo = async id => {
+    await Axios.delete(`/todos/${id}`, { headers: { Authorization: token } });
+    setTodos(todos.filter(todo => todo.id !== id));
   };
 
   const [formInputs, setFormInputs] = useState(inputsFormat);
@@ -112,7 +122,7 @@ const Todo = () => {
         <Style.Detail>
           <Style.ButtonWrap>
             <Style.Button>수정</Style.Button>
-            <Style.Button>삭제</Style.Button>
+            <Style.Button onClick={() => removeTodo(params.id)}>삭제</Style.Button>
           </Style.ButtonWrap>
           <Style.DetailText>
             <h1>{detail.title}</h1>
