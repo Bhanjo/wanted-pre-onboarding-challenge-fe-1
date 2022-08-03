@@ -1,9 +1,16 @@
 import Axios from '../lib/axsios';
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ContentContainer from '../componenets/ContentContainer';
 
 // 로그인이 안되어 있다면 로그인 페이지로 이동 기능 구현 필요
 const Home = () => {
+  // const token = localStorage.getItem('jwt');
+  const [token, setToken] = useState(localStorage.getItem('jwt'));
+
+  const navigate = useNavigate();
+
   const todoId = useRef(1);
 
   const [todos, setTodos] = useState();
@@ -51,8 +58,15 @@ const Home = () => {
     initFormInputs();
   };
 
+  useEffect(() => {
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/auth/sign-in');
+    }
+  }, []);
+
   return (
-    <Container>
+    <ContentContainer>
       <TodoContainer>
         <form onSubmit={onSubmit}>
           <input name='title' value={title} onChange={onChange} />
@@ -65,18 +79,9 @@ const Home = () => {
           ))} */}
         </div>
       </TodoContainer>
-    </Container>
+    </ContentContainer>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  height: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 
 const TodoContainer = styled.div`
   min-width: 400px;

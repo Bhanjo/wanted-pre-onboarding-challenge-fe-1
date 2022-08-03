@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "browser": true,
     "es6": true,
@@ -25,7 +26,8 @@
     "consistent-return": 0,
     "default-case": 0,
     "react/require-default-props": 0,
-    "react/function-component-definition": 0
+    "react/function-component-definition": 0,
+    "react/prop-types": 0
   },
   "parserOptions": {
     "ecmaFeatures": {
