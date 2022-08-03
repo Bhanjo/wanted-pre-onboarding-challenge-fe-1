@@ -1,10 +1,9 @@
-import Axios from '../lib/axios';
-import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import Axios from '../../lib/axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ContentContainer from '../componenets/ContentContainer';
+import ContentContainer from '../../componenets/ContentContainer';
+import * as Style from './styles';
 
-// 로그인이 안되어 있다면 로그인 페이지로 이동 기능 구현 필요
 const Home = () => {
   // 폼 구조
   const inputsFormat = {
@@ -79,38 +78,20 @@ const Home = () => {
 
   return (
     <ContentContainer>
-      <TodoContainer>
-        <form onSubmit={onSubmit}>
-          <input name='title' value={title} onChange={onChange} />
-          <input name='content' value={content} onChange={onChange} />
+      <Style.TodoContainer>
+        <Style.Form onSubmit={onSubmit}>
+          <input name='title' value={title} onChange={onChange} placeholder='제목' />
+          <input name='content' value={content} onChange={onChange} placeholder='내용' />
           <button type='submit'>등록</button>
-        </form>
-        <List>
+        </Style.Form>
+        <Style.List>
           {todos.map(todo => (
             <button key={todo.id}>{todo.title}</button>
           ))}
-        </List>
-      </TodoContainer>
+        </Style.List>
+      </Style.TodoContainer>
     </ContentContainer>
   );
 };
-
-const TodoContainer = styled.div`
-  min-width: 400px;
-  min-height: 500px;
-  background-color: blue;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary.skywhite};
-  button:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.primary.indigo};
-    color: white;
-  }
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 export default Home;
