@@ -20,7 +20,8 @@ const Header = () => {
   return (
     <Style.Container>
       <Style.RouteWrap>
-        <Style.RouteButton to='/'>Todo</Style.RouteButton>
+        <Style.RouteButton to='/'>Home</Style.RouteButton>
+        <Style.RouteButton to='/todo'>Todo</Style.RouteButton>
         {token ? (
           <button type='button' onClick={logout}>
             로그아웃
