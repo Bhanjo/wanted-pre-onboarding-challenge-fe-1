@@ -68,7 +68,11 @@ export const Detail = styled.div`
   word-break: break-all;
 `;
 
-export const DetailText = styled.div`
+export const DetailText = styled.form`
+  margin: 20px 10px;
+`;
+
+export const DetailView = styled.div`
   margin: 20px 10px;
   hr {
     border: 1px solid ${({ theme }) => theme.colors.primary.white};

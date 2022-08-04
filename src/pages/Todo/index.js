@@ -17,6 +17,11 @@ const Todo = () => {
     title: '',
     content: '',
   });
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [updateText, setUpdateText] = useState({
+    title: '',
+    content: '',
+  });
 
   const navigate = useNavigate();
   const params = useParams();
@@ -59,6 +64,19 @@ const Todo = () => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  const updateTodo = async (id, form) => {
+    await Axios.put(`/todos/${id}`, form, { headers: { Authorization: token } });
+    setTodos(
+      todos.map(todo =>
+        todo.id === id ? { ...todo, title: form.title, content: form.contetn } : todo,
+      ),
+    );
+    setDetail({
+      title: form.title,
+      content: form.content,
+    });
+  };
+
   const [formInputs, setFormInputs] = useState(inputsFormat);
   const { title, content } = formInputs;
 
@@ -70,6 +88,22 @@ const Todo = () => {
     const { name, value } = e.target;
     setFormInputs({
       ...formInputs,
+      [name]: value,
+    });
+  };
+
+  const onChangeUpdateMode = () => {
+    setIsUpdateMode(!isUpdateMode);
+    setUpdateText({
+      title: detail.title,
+      content: detail.content,
+    });
+  };
+
+  const onChangeUpdate = e => {
+    const { name, value } = e.target;
+    setUpdateText({
+      ...updateText,
       [name]: value,
     });
   };
@@ -91,6 +125,17 @@ const Todo = () => {
       }
     }
     initFormInputs();
+  };
+
+  const onSubmitTodoUpdate = async e => {
+    e.preventDefault();
+    const id = params.id;
+    const updateItem = {
+      title: updateText.title,
+      content: updateText.content,
+    };
+    updateTodo(id, updateItem);
+    setIsUpdateMode(false);
   };
 
   useEffect(() => {
@@ -121,14 +166,30 @@ const Todo = () => {
       {params.id && (
         <Style.Detail>
           <Style.ButtonWrap>
-            <Style.Button>수정</Style.Button>
+            <Style.Button onClick={onChangeUpdateMode}>수정</Style.Button>
             <Style.Button onClick={() => removeTodo(params.id)}>삭제</Style.Button>
           </Style.ButtonWrap>
-          <Style.DetailText>
-            <h1>{detail.title}</h1>
-            <hr />
-            <p>{detail.content}</p>
-          </Style.DetailText>
+          {isUpdateMode ? (
+            <Style.Form onSubmit={onSubmitTodoUpdate}>
+              <input type='text' name='title' value={updateText.title} onChange={onChangeUpdate} />
+              <input
+                type='text'
+                name='content'
+                value={updateText.content}
+                onChange={onChangeUpdate}
+              />
+              <Style.Button type='submut'>완료</Style.Button>
+              <Style.Button type='button' onClick={() => setIsUpdateMode(!isUpdateMode)}>
+                취소
+              </Style.Button>
+            </Style.Form>
+          ) : (
+            <Style.DetailView>
+              <h1>{detail.title}</h1>
+              <hr />
+              <p>{detail.content}</p>
+            </Style.DetailView>
+          )}
         </Style.Detail>
       )}
     </ContentContainer>
