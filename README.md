@@ -1,6 +1,6 @@
 # Wanted Pre Onboarding Challenge FE
 
-### [👨‍💻 도전을 즐기는 개발자 배한조입니다](https://www.notion.so/3e61bb9e1a1747e1b492d7485806a495)
+### [👨‍💻 도전을 즐기는 개발자 배한조입니다](https://literate-web-05f.notion.site/3e61bb9e1a1747e1b492d7485806a495)
 
 ### 📰 목차
 |  머릿말             |
