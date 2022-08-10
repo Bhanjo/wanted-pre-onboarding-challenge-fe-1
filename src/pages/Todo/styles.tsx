@@ -12,7 +12,7 @@ export const TodoContainer = styled.div`
   overflow-y: auto;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<{ isTodo?: boolean }>`
   padding: 10px;
   background-color: ${props => (props.isTodo ? 'none' : props.theme.colors.primary.indigo)};
   color: ${props => (props.isTodo ? 'black' : props.theme.colors.primary.white)};
