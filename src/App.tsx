@@ -1,3 +1,4 @@
+import React from 'react';
 import GlobalStyle from './styles/GlobalStyle';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Todo from './pages/Todo';
