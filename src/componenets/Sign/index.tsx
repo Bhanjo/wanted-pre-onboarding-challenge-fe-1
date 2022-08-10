@@ -1,6 +1,5 @@
 import * as Style from './styles';
 import ContentContainer from '../ContentContainer';
-import React from 'react';
 
 type Props = {
   title: string;
@@ -17,7 +16,6 @@ const Sign = ({ title, children, onSubmit, BtnDisabled }: Props) => {
         <Style.Title>{title}</Style.Title>
         <Style.Form onSubmit={onSubmit}>
           <Style.FormDatas>{children}</Style.FormDatas>
-          <p>{}</p>
           <Style.SubmitButton type='submit' disabled={BtnDisabled}>
             {title}
           </Style.SubmitButton>

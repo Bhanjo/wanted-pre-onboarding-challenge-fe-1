@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const InputGroup = styled.div`
   display: flex;
@@ -17,9 +17,13 @@ export const InputGroup = styled.div`
   }
 `;
 
-export const Label = styled.label`
-  ::after {
-    content: ${props => props.isEssentail && '*'};
-    color: ${props => props.isEssentail && 'red'};
-  }
+export const Label = styled.label<{ isEssential: boolean }>`
+  ${props =>
+    props.isEssential &&
+    css`
+      :after {
+        content: '*';
+        color: red;
+      }
+    `}
 `;

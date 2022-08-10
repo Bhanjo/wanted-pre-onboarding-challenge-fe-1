@@ -1,10 +1,18 @@
 import * as Style from './styles';
 
-const InputBox = ({ inputName, labelText, error, children, isEssentail }) => {
+type Props = {
+  inputName: string;
+  labelText: string;
+  error?: string;
+  children: React.ReactNode;
+  isEssential?: boolean;
+};
+
+const InputBox = ({ inputName, labelText, error, children, isEssential }: Props) => {
   return (
     <div>
       <Style.InputGroup>
-        <Style.Label htmlFor={inputName} isEssentail={isEssentail}>
+        <Style.Label htmlFor={inputName} isEssential={isEssential ? true : false}>
           {labelText}
         </Style.Label>
         {/* input을 children으로 받습니다. */}
