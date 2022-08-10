@@ -29,6 +29,10 @@
   - [ ] 특정 todo를 클릭하면 `/todo/:id`로 리다이렉트되며 오른쪽에 상세 보기가 추가됩니다.
   - [ ] react-router-rom의 navigate를 통해 뒤로 가기시 이전 내용이 보입니다.
 
+## ⚔ 개선점
+- [x] JS -> TS로 마이그레이션했습니다.
+  - [x] [마이그레이션 과정](https://blog.naver.com/PostView.naver?blogId=hanjo1515&Redirect=View&logNo=222845291789&categoryNo=28&isAfterWrite=true&isMrblogPost=false&isHappyBeanLeverage=true&contentLength=33231&isWeeklyDiaryPopupEnabled=false)
+
 ## 🔒 프로젝트 시작
 
 ```
