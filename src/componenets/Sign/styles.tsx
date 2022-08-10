@@ -35,9 +35,9 @@ export const SubmitButton = styled.button`
   font-weight: bold;
   background-color: ${props => (props.disabled ? 'gray' : props.theme.colors.primary.indigo)};
   transition: 0.2s;
-  cursor: ${props => props.disabled || 'pointer'};
+  cursor: ${props => !props.disabled && 'pointer'};
   :hover {
-    background-color: ${props => props.disabled || props.theme.colors.primary.darkblue};
+    background-color: ${props => !props.disabled && props.theme.colors.primary.darkblue};
   }
 `;
 

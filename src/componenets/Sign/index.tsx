@@ -1,8 +1,16 @@
 import * as Style from './styles';
 import ContentContainer from '../ContentContainer';
+import React from 'react';
+
+type Props = {
+  title: string;
+  onSubmit: () => void;
+  BtnDisabled?: boolean;
+  children: React.ReactNode;
+};
 
 // 회원가입, 로그인을 위한 컴포넌트입니다.
-const Sign = ({ title, children, onSubmit, BtnDisabled }) => {
+const Sign = ({ title, children, onSubmit, BtnDisabled }: Props) => {
   return (
     <ContentContainer>
       <Style.Wrap>
