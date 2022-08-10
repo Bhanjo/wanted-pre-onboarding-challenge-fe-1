@@ -3,7 +3,7 @@ import * as Style from './styles';
 type Props = {
   inputName: string;
   labelText: string;
-  error?: string;
+  error?: string | null;
   children: React.ReactNode;
   isEssential?: boolean;
 };

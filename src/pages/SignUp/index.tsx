@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../../lib/axios';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
+
+type checkVaildType = 'email' | 'password' | 'rePassword';
 
 const SignUp = () => {
   // 리액트 라우터 돔 v6 이후부터는 useHistory 대신 useNavigate 사용
@@ -35,7 +37,7 @@ const SignUp = () => {
   const [passwordValid, setPasswordValid] = useState(false);
   const [rePasswordVaild, setRePasswordVaild] = useState(false);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
@@ -43,7 +45,7 @@ const SignUp = () => {
     });
   };
 
-  const inputVaild = type => {
+  const inputVaild = (type: checkVaildType) => {
     let msg = null;
     if (type === 'email' && !emailValid && email) {
       msg = vaildMessages.email;
@@ -68,24 +70,24 @@ const SignUp = () => {
       });
 
       return data.data;
-    } catch (error) {
-      if (error.request.status === 409) {
+    } catch (e: any) {
+      if (e.request.status === 409) {
         alert('이미 존재하는 회원입니다.');
       }
-      console.log('error occured in signupRequst', error);
+      console.log('error occured in signupRequst', e);
     }
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await signupReqest();
       alert(res.message);
+      navigate('/');
     } catch (error) {
       console.log('error occured in onSubmit');
     }
     setInputs(initForm);
-    navigate('/');
   };
 
   useEffect(() => {

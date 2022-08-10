@@ -20,7 +20,7 @@ const SignIn = () => {
   const [inputs, setInputs] = useState(initForm);
   const { email, password } = inputs;
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
@@ -35,7 +35,7 @@ const SignIn = () => {
         password: password,
       });
       return data.data;
-    } catch (e) {
+    } catch (e: any) {
       if (e.request.status === 400) {
         alert('일치하는 정보가 없습니다');
       } else {
@@ -44,7 +44,7 @@ const SignIn = () => {
     }
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await loginReqeust();
