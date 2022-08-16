@@ -1,6 +1,6 @@
-import Axios from '../../lib/axios';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
+import { signin } from '../../api/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,32 +28,12 @@ const SignIn = () => {
     });
   };
 
-  const loginReqeust = async () => {
-    try {
-      const data = await Axios.post('/users/login', {
-        email: email,
-        password: password,
-      });
-      return data.data;
-    } catch (e: any) {
-      if (e.request.status === 400) {
-        alert('일치하는 정보가 없습니다');
-      } else {
-        console.log('error occured in fetchLogin', e);
-      }
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await loginReqeust();
+    signin({ email, password }).then(res => {
       localStorage.setItem('jwt', res.token);
-      alert('로그인 완료');
       navigate('/');
-    } catch (e) {
-      console.log('error occured in onSubmit', e);
-    }
+    });
     setInputs(initForm);
   };
 
