@@ -138,7 +138,7 @@ const Todo = () => {
     initFormInputs();
   };
 
-  const onSubmitTodoUpdate = async (e: React.FormEvent) => {
+  const onSubmitTodoUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     const id = params.id;
     const updateItem = {

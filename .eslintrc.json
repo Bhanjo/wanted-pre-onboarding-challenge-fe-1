@@ -9,6 +9,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
   "rules": {
@@ -27,7 +28,8 @@
     "default-case": 0,
     "react/require-default-props": 0,
     "react/function-component-definition": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "require-await": "error"
   },
   "parserOptions": {
     "ecmaFeatures": {

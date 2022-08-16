@@ -1,8 +1,8 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Axios from '../../lib/axios';
 import Sign from '../../componenets/Sign';
 import InputBox from '../../componenets/InputBox';
+import { signup } from '../../api/auth';
 
 type checkVaildType = 'email' | 'password' | 'rePassword';
 
@@ -62,31 +62,9 @@ const SignUp = () => {
     return msg;
   };
 
-  const signupReqest = async () => {
-    try {
-      const data = await Axios.post('/users/create', {
-        email: email,
-        password: password,
-      });
-
-      return data.data;
-    } catch (e: any) {
-      if (e.request.status === 409) {
-        alert('이미 존재하는 회원입니다.');
-      }
-      console.log('error occured in signupRequst', e);
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent<Element>) => {
     e.preventDefault();
-    try {
-      const res = await signupReqest();
-      alert(res.message);
-      navigate('/');
-    } catch (error) {
-      console.log('error occured in onSubmit');
-    }
+    signup({ email, password }).then(() => navigate('/'));
     setInputs(initForm);
   };
 

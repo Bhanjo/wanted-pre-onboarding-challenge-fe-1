@@ -3,7 +3,7 @@ import ContentContainer from '../ContentContainer';
 
 type Props = {
   title: string;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
+  onSubmit: (e: React.FormEvent<Element>) => void;
   BtnDisabled?: boolean;
   children: React.ReactNode;
 };
