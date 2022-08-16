@@ -1,5 +1,5 @@
 import Axios from '../../lib/axios';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ContentContainer from '../../componenets/ContentContainer';
 import * as Style from './styles';
