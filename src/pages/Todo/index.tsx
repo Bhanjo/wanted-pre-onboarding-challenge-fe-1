@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ContentContainer from '../../componenets/ContentContainer';
 import * as Style from './styles';
+import TodoForm from './TodoForm';
+import useGetAllTodos from '../../hooks/useGetAllTodo';
 
 type Form = {
   title: string;
@@ -16,14 +18,10 @@ type Todo = {
 };
 
 const Todo = () => {
-  // 폼 구조
-  const inputsFormat = {
-    title: '',
-    content: '',
-  };
-
   const token = localStorage.getItem('jwt');
-  const [todos, setTodos] = useState<Array<Todo>>([]);
+
+  const { data: todos, error, isLoading } = useGetAllTodos();
+
   const [detail, setDetail] = useState({
     title: '',
     content: '',
@@ -36,12 +34,6 @@ const Todo = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-
-  const getAllTodos = async () => {
-    const res = await Axios.get('/todos', { headers: { Authorization: token || '' } });
-    const { data } = res.data;
-    setTodos(data);
-  };
 
   const getTodoById = async (id: string) => {
     if (id) {
@@ -61,45 +53,16 @@ const Todo = () => {
     }
   };
 
-  const createTodo = async (form: Form) => {
-    const req = await Axios.post('/todos', form, {
-      headers: {
-        Authorization: token || '',
-      },
-    });
-    return req.data;
-  };
-
   const removeTodo = async (id: string) => {
     await Axios.delete(`/todos/${id}`, { headers: { Authorization: token || '' } });
-    setTodos(todos.filter((todo: Todo) => todo.id !== id));
   };
 
   const updateTodo = async (id: string, form: Form) => {
     await Axios.put(`/todos/${id}`, form, { headers: { Authorization: token || '' } });
-    setTodos(
-      todos.map((todo: any) =>
-        todo.id === id ? { ...todo, title: form.title, content: form.content } : todo,
-      ),
-    );
+
     setDetail({
       title: form.title,
       content: form.content,
-    });
-  };
-
-  const [formInputs, setFormInputs] = useState(inputsFormat);
-  const { title, content } = formInputs;
-
-  const initFormInputs = () => {
-    setFormInputs(inputsFormat);
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormInputs({
-      ...formInputs,
-      [name]: value,
     });
   };
 
@@ -119,25 +82,6 @@ const Todo = () => {
     });
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const todo = {
-      title: title,
-      content: content,
-    };
-    try {
-      const res = await createTodo(todo);
-      setTodos(todos.concat(res.data));
-    } catch (e: any) {
-      if (e.response.status === 400) {
-        alert(e.response.data.details);
-      } else {
-        console.log('error occured in onSubmit', e);
-      }
-    }
-    initFormInputs();
-  };
-
   const onSubmitTodoUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     const id = params.id;
@@ -152,7 +96,6 @@ const Todo = () => {
   };
 
   useEffect(() => {
-    getAllTodos();
     if (!token) {
       alert('로그인이 필요한 서비스입니다.');
       navigate('/auth/sign-in');
@@ -162,14 +105,18 @@ const Todo = () => {
     }
   }, [params.id]);
 
+  if (error) {
+    return <p>에러발생</p>;
+  }
+
+  if (isLoading) {
+    return <p>로딩중..</p>;
+  }
+
   return (
     <ContentContainer>
       <Style.TodoContainer>
-        <Style.Form onSubmit={onSubmit}>
-          <input name='title' value={title} onChange={onChange} placeholder='제목' />
-          <input name='content' value={content} onChange={onChange} placeholder='내용' />
-          <Style.Button type='submit'>등록</Style.Button>
-        </Style.Form>
+        <TodoForm />
         <Style.List>
           {todos.map((todo: Todo) => (
             <Style.Button key={todo.id} isTodo onClick={() => navigate(`/todo/${todo.id}`)}>
