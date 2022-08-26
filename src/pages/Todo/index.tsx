@@ -22,8 +22,8 @@ const Todo = () => {
   const { data: todos, error, isLoading } = useGetAllTodos();
 
   const [detail, setDetail] = useState({
-    title: 'test',
-    content: 'test',
+    title: '',
+    content: '',
   });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Todo = () => {
       navigate('/auth/sign-in');
     }
     if (params.id) {
-      fetchTodoById(params.id).then(data => setDetail(data));
+      fetchTodoById(params.id, setDetail);
     }
   }, [params.id]);
 
@@ -50,7 +50,7 @@ const Todo = () => {
         <TodoForm />
         <TodoList todos={todos} />
       </Style.TodoContainer>
-      {params.id && <TodoDetail todo={detail} todoId={params.id} />}
+      {params.id && detail && <TodoDetail todo={detail} todoId={params.id} />}
     </ContentContainer>
   );
 };

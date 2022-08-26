@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import * as Style from './styles';
 import TodoDetailView from './TodoDetailView';
-import { updateTodo } from '../../api/todo';
 import useRemoveTodo from '../../hooks/useRomoveTodo';
+import useUpdateTodo from '../../hooks/useUpdateTodo';
 
 type Todo = {
   title: string;
@@ -22,6 +22,7 @@ const TodoDetail = ({ todo, todoId }: Props) => {
   });
 
   const removeTodo = useRemoveTodo();
+  const updateTodo = useUpdateTodo();
 
   const onChangeUpdateMode = () => {
     setIsUpdateMode(!isUpdateMode);
@@ -46,7 +47,7 @@ const TodoDetail = ({ todo, todoId }: Props) => {
       content: updateText.content,
     };
     if (todoId) {
-      updateTodo(todoId, updateItem);
+      updateTodo.mutate({ id: todoId, form: updateItem });
       setIsUpdateMode(false);
     }
   };
