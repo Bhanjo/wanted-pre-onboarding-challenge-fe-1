@@ -5,11 +5,6 @@ type Form = {
   content: string;
 };
 
-type Props = {
-  form: Form;
-  token: any;
-};
-
 export const fetchAllTodos = async () => {
   const token = localStorage.getItem('jwt');
   const res = await Axios.get('/todos', { headers: { Authorization: token || '' } });
@@ -17,7 +12,21 @@ export const fetchAllTodos = async () => {
   return data;
 };
 
-export const createTodo = async ({ form, token }: Props) => {
+export const fetchTodoById = async (id: string | undefined) => {
+  const token = localStorage.getItem('jwt');
+  if (id) {
+    try {
+      const req = await Axios.get(`/todos/${id}`, { headers: { Authorization: token || '' } });
+      const { data } = req.data;
+      return data;
+    } catch (e) {
+      console.log('fetchTodoById 실패', e);
+    }
+  }
+};
+
+export const createTodo = async (form: Form) => {
+  const token = localStorage.getItem('jwt');
   try {
     await Axios.post('/todos', form, {
       headers: {
@@ -25,6 +34,20 @@ export const createTodo = async ({ form, token }: Props) => {
       },
     });
   } catch (e) {
-    console.log('asdasd');
+    console.log('createTodo 에러 발생', e);
   }
+};
+
+export const updateTodo = async (id: string, form: Form) => {
+  const token = localStorage.getItem('jwt');
+  await Axios.put(`/todos/${id}`, form, { headers: { Authorization: token || '' } });
+  // setDetail({
+  //   title: form.title,
+  //   content: form.content,
+  // });
+};
+
+export const removeTodo = async (id: string) => {
+  const token = localStorage.getItem('jwt');
+  await Axios.delete(`/todos/${id}`, { headers: { Authorization: token || '' } });
 };

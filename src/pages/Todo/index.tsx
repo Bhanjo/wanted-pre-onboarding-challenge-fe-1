@@ -1,15 +1,12 @@
-import Axios from '../../lib/axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ContentContainer from '../../componenets/ContentContainer';
 import * as Style from './styles';
 import TodoForm from './TodoForm';
 import useGetAllTodos from '../../hooks/useGetAllTodo';
-
-type Form = {
-  title: string;
-  content: string;
-};
+import TodoList from './TodoList';
+import { fetchTodoById } from '../../api/todo';
+import TodoDetail from './TodoDetail';
 
 type Todo = {
   id: string;
@@ -19,81 +16,15 @@ type Todo = {
 
 const Todo = () => {
   const token = localStorage.getItem('jwt');
+  const navigate = useNavigate();
+  const params = useParams();
 
   const { data: todos, error, isLoading } = useGetAllTodos();
 
   const [detail, setDetail] = useState({
-    title: '',
-    content: '',
+    title: 'test',
+    content: 'test',
   });
-  const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [updateText, setUpdateText] = useState({
-    title: '',
-    content: '',
-  });
-
-  const navigate = useNavigate();
-  const params = useParams();
-
-  const getTodoById = async (id: string) => {
-    if (id) {
-      try {
-        const req = await Axios.get(`/todos/${id}`, { headers: { Authorization: token || '' } });
-        const { data } = req.data;
-        setDetail({
-          title: data.title,
-          content: data.content,
-        });
-      } catch (e) {
-        setDetail({
-          title: '해당 todo를 찾을 수 없습니다',
-          content: '',
-        });
-      }
-    }
-  };
-
-  const removeTodo = async (id: string) => {
-    await Axios.delete(`/todos/${id}`, { headers: { Authorization: token || '' } });
-  };
-
-  const updateTodo = async (id: string, form: Form) => {
-    await Axios.put(`/todos/${id}`, form, { headers: { Authorization: token || '' } });
-
-    setDetail({
-      title: form.title,
-      content: form.content,
-    });
-  };
-
-  const onChangeUpdateMode = () => {
-    setIsUpdateMode(!isUpdateMode);
-    setUpdateText({
-      title: detail.title,
-      content: detail.content,
-    });
-  };
-
-  const onChangeUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUpdateText({
-      ...updateText,
-      [name]: value,
-    });
-  };
-
-  const onSubmitTodoUpdate = (e: React.FormEvent) => {
-    e.preventDefault();
-    const id = params.id;
-    const updateItem = {
-      title: updateText.title,
-      content: updateText.content,
-    };
-    if (id) {
-      updateTodo(id, updateItem);
-      setIsUpdateMode(false);
-    }
-  };
 
   useEffect(() => {
     if (!token) {
@@ -101,7 +32,7 @@ const Todo = () => {
       navigate('/auth/sign-in');
     }
     if (params.id) {
-      getTodoById(params.id);
+      fetchTodoById(params.id).then(data => setDetail(data));
     }
   }, [params.id]);
 
@@ -117,43 +48,9 @@ const Todo = () => {
     <ContentContainer>
       <Style.TodoContainer>
         <TodoForm />
-        <Style.List>
-          {todos.map((todo: Todo) => (
-            <Style.Button key={todo.id} isTodo onClick={() => navigate(`/todo/${todo.id}`)}>
-              {todo.title}
-            </Style.Button>
-          ))}
-        </Style.List>
+        <TodoList todos={todos} />
       </Style.TodoContainer>
-      {params.id && (
-        <Style.Detail>
-          <Style.ButtonWrap>
-            <Style.Button onClick={onChangeUpdateMode}>수정</Style.Button>
-            <Style.Button onClick={() => removeTodo(params.id || '')}>삭제</Style.Button>
-          </Style.ButtonWrap>
-          {isUpdateMode ? (
-            <Style.Form onSubmit={onSubmitTodoUpdate}>
-              <input type='text' name='title' value={updateText.title} onChange={onChangeUpdate} />
-              <input
-                type='text'
-                name='content'
-                value={updateText.content}
-                onChange={onChangeUpdate}
-              />
-              <Style.Button type='submit'>완료</Style.Button>
-              <Style.Button type='button' onClick={() => setIsUpdateMode(!isUpdateMode)}>
-                취소
-              </Style.Button>
-            </Style.Form>
-          ) : (
-            <Style.DetailView>
-              <h1>{detail.title}</h1>
-              <hr />
-              <p>{detail.content}</p>
-            </Style.DetailView>
-          )}
-        </Style.Detail>
-      )}
+      {params.id && <TodoDetail todo={detail} todoId={params.id} />}
     </ContentContainer>
   );
 };

@@ -1,16 +1,8 @@
 import { useState } from 'react';
-import { createTodo } from '../../api/todo';
 import usePostTodo from '../../hooks/usePostTodo';
 import * as Style from './styles';
 
-type Todo = {
-  id: string;
-  title: string;
-  content: string;
-};
-
 const TodoForm = () => {
-  const token = localStorage.getItem('jwt');
   const inputsFormat = {
     title: '',
     content: '',
@@ -18,12 +10,12 @@ const TodoForm = () => {
 
   const postTodo = usePostTodo();
 
+  const [formInputs, setFormInputs] = useState(inputsFormat);
+  const { title, content } = formInputs;
+
   const initFormInputs = () => {
     setFormInputs(inputsFormat);
   };
-
-  const [formInputs, setFormInputs] = useState(inputsFormat);
-  const { title, content } = formInputs;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,7 +31,7 @@ const TodoForm = () => {
       title: title,
       content: content,
     };
-    postTodo.mutate({ form: todo, token });
+    postTodo.mutate(todo);
     initFormInputs();
   };
 
