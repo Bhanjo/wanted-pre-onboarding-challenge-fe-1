@@ -1,12 +1,8 @@
 import * as Style from './styles';
-
-type Todo = {
-  title: string;
-  content: string;
-};
+import type { TodoItem } from '../../types/todo';
 
 type Props = {
-  todo: Todo;
+  todo: TodoItem;
 };
 
 const TodoDetailView = ({ todo }: Props) => {

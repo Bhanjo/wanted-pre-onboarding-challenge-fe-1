@@ -3,14 +3,10 @@ import * as Style from './styles';
 import TodoDetailView from './TodoDetailView';
 import useRemoveTodo from '../../hooks/useRomoveTodo';
 import useUpdateTodo from '../../hooks/useUpdateTodo';
-
-type Todo = {
-  title: string;
-  content: string;
-};
+import type { TodoItem } from '../../types/todo';
 
 type Props = {
-  todo: Todo;
+  todo: TodoItem;
   todoId: string;
 };
 

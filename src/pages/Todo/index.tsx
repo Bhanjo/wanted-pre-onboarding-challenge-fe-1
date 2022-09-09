@@ -3,16 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ContentContainer from '../../componenets/ContentContainer';
 import * as Style from './styles';
 import TodoForm from './TodoForm';
-import useGetAllTodos from '../../hooks/useGetAllTodo';
 import TodoList from './TodoList';
-import { fetchTodoById } from '../../api/todo';
 import TodoDetail from './TodoDetail';
-
-type Todo = {
-  id: string;
-  title: string;
-  content: string;
-};
+import useGetAllTodos from '../../hooks/useGetAllTodo';
+import { fetchTodoById } from '../../api/todo';
 
 const Todo = () => {
   const token = localStorage.getItem('jwt');
